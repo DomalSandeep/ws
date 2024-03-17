@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Temperature Conversion Web Service</title>
+</head>
+<body>
+
+<h2>Practical 01: Temperature Conversion Web Service Implementation</h2>
+
+<!-- Aim -->
+<h3>Aim:</h3>
+<p>Write a program to implement to create a simple web service that converts the temperature from Fahrenheit to Celsius and vice versa.</p>
+
+<!-- Steps -->
+<h3>Steps:</h3>
+<ol>
+    <li>Create a new ASP.NET project</li>
+    <li>Add web service</li>
+    <li>Add a web form</li>
+</ol>
+
+<!-- WebService code -->
+<h3>WebService code:</h3>
+<p>The following code represents the C# implementation of the web service:</p>
+<pre>
+<code>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Services;
+
+namespace TemperatureConvert
+{
+    /// &lt;summary>
+    /// Summary description for WebService1
+    /// &lt;/summary>
+    [WebService(Namespace = "http://tempuri.org/")]
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [System.ComponentModel.ToolboxItem(false)]
+    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
+    // [System.Web.Script.Services.ScriptService]
+    public class WebService1 : System.Web.Services.WebService
+    {
+
+        [WebMethod]
+        public string HelloWorld()
+        {
+            return "Hello World";
+        }
+        [WebMethod]
+        public double ctof(double c)
+        {
+            return ((c * 1.8) + 32);
+        }
+        [WebMethod]
+        public double ftoc(double f)
+        {
+            return ((f - 32) * 0.56);
+        }
+    }
+}
+</code>
+</pre>
+
+<!-- MyPage.aspx Code -->
+<h3>MyPage.aspx Code:</h3>
+<p>The following code represents the C# code for the web form (MyPage.aspx) that interacts with the web service:</p>
+<pre>
+<code>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace TemperatureConvert
+{
+    public partial class mypage : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            WebService1 ws = new WebService1();
+            switch (RadioButtonList1.SelectedIndex)
+            {
+                case 0: TextBox2.Text = ws.ftoc(Convert.ToDouble(TextBox1.Text)).ToString(); break;
+                case 1: TextBox2.Text = ws.ctof(Convert.ToDouble(TextBox1.Text)).ToString(); break;
+            }
+        }
+    }
+}
+</code>
+</pre>
+
+<h2>Practical 02: Operation Implementation with WCF Service Application</h2>
+
+<h3>Aim:</h3>
+<p>Write a program to implement the operation that can receive requests and return responses in two ways:</p>
+<ol>
+    <li>One-Way operation</li>
+    <li>Request-Response</li>
+</ol>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Create a WCF Service Application</strong>:
+        <ul>
+            <li>Create a new project with WCF Service Application.</li>
+        </ul>
+    </li>
+    <li><strong>Add Code to IService1.cs</strong>:
+        <ul>
+            <li>Define the service contract interface `IService1`.</li>
+            <li>Add methods for Subtract, Multiply, Divide, Hello, and Add operations.</li>
+        </ul>
+    </li>
+    <li><strong>Add Code to Service1.cs</strong>:
+        <ul>
+            <li>Implement the service contract interface in `Service1` class.</li>
+            <li>Implement methods for Subtract, Multiply, Divide, Hello, and Add operations.</li>
+        </ul>
+    </li>
+    <li><strong>Run the Project</strong>:
+        <ul>
+            <li>Start the project to host the WCF service.</li>
+        </ul>
+    </li>
+    <li><strong>Check One-Way Operation</strong>:
+        <ul>
+            <li>Click on "Subtract" to check for One-Way Operation.</li>
+            <li>One-Way operation means the client sends a request to the service, but the service doesn't send any response back to the client. It's a fire-and-forget scenario.</li>
+        </ul>
+    </li>
+    <li><strong>Check Request-Response</strong>:
+        <ul>
+            <li>Click on "Add" to check for Request-Response.</li>
+            <li>Request-Response means the client sends a request to the service, and the service sends a response back to the client.</li>
+        </ul>
+    </li>
+</ol>
+
+<h3>Conclusion:</h3>
+<p>Congratulations! You have successfully implemented a WCF service with operations supporting both One-Way and Request-Response communication.</p>
+
+<h2>Practical 03: Business UDDI Registry Entry Extraction</h2>
+
+<h3>Aim:</h3>
+<p>Write a program to implement business UDDI Registry entry extraction.</p>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Download JUDDI:</strong>
+        <ul>
+            <li>Download JUDDI from the official link: <a href="https://archive.apache.org/dist/juddi/juddi/3.3.9/juddi-distro-3.3.9/juddi-distro-3.3.9.zip">https://archive.apache.org/dist/juddi/juddi/3.3.9/juddi-distro-3.3.9/juddi-distro-3.3.9.zip</a></li>
+            <li>Extract the downloaded file.</li>
+        </ul>
+    </li>
+    <li><strong>Install JDK 8:</strong>
+        <ul>
+            <li>Ensure JDK 8 is installed and paths are set accordingly.</li>
+            <li>Set environment variables for CATALINA_HOME, CLASSPATH, JAVA_HOME, and PATH.</li>
+        </ul>
+    </li>
+    <li><strong>Start JUDDI Server:</strong>
+        <ul>
+            <li>Navigate to the bin folder in the JUDDI installation directory.</li>
+            <li>Run `makebase.bat` to initialize the database.</li>
+            <li>Add `javax.xml.accessExternalDTD=all` to the end of `catalina.properties` file in the conf folder.</li>
+            <li>Run `startup.bat` to start the server.</li>
+            <li>Access JUDDI at `localhost:8080` in a web browser.</li>
+        </ul>
+    </li>
+    <li><strong>Create a New Project in NetBeans:</strong>
+        <ul>
+            <li>Open NetBeans and create a new Java application project.</li>
+        </ul>
+    </li>
+    <li><strong>Add Code:</strong>
+        <ul>
+            <li>Add the provided Java code to the project.</li>
+        </ul>
+    </li>
+    <li><strong>Observe the Output:</strong>
+        <ul>
+            <li>Execute the program and observe the output.</li>
+        </ul>
+    </li>
+</ol>
+
+<h3>Code:</h3>
+
+<pre>
+<code>
+package uddi;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+public class Uddi {
+    public static void main(String[] args) {
+        try {
+            // Set UDDI registry information
+            String inquiryURL = "http://localhost:8080/juddiv3/services/inquiryv2?wsdl";
+            // Set authentication information if required
+            String username = "uddiadmin";
+            String password = "da_password1";
+            // Create SOAP request payload
+            String soapRequest = "<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" " +
+                    "xmlns:urn=\"urn:uddi-org:api_v2\">\n" +
+                    " <soapenv:Header/>\n" +
+                    " <soapenv:Body>\n" +
+                    " <urn:find_business generic=\"2.0\" maxRows=\"10\">\n" +
+                    " <urn:name>*</urn:name>\n" +
+                    " </urn:find_business>\n" +
+                    " </soapenv:Body>\n" +
+                    "</soapenv:Envelope>";
+            // Set up HTTP connection
+            URL url = new URL(inquiryURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "text/xml;charset=UTF-8");
+            connection.setDoOutput(true);
+            // Set up HTTP basic authentication
+            if (username != null && password != null) {
+                String credentials = username + ":" + password;
+                String encodedCredentials =
+                        java.util.Base64.getEncoder().encodeToString(credentials.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                connection.setRequestProperty("Authorization", "Basic " + encodedCredentials);
+            }
+            // Send SOAP request
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = soapRequest.getBytes(java.nio.charset.StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+            // Get SOAP response
+            int responseCode = connection.getResponseCode();
+            System.out.println("HTTP Response Code: " + responseCode);
+            // Read response
+            try (BufferedReader br = new BufferedReader(new
+                    InputStreamReader(connection.getInputStream()))) {
+                String line;
+                StringBuilder response = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    response.append(line).append("\n");
+                }
+                // TODO: Parse the XML response and extract business names and service names
+                System.out.println("Response from JUDDI registry: " + response.toString());
+            }
+            // Close the connection
+            connection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code>
+</pre>
+
+
+<h2>Practical 04: Client Consuming Web Services</h2>
+
+<h3>Aim:</h3>
+<p>Develop a client that consumes web services developed on different platforms.</p>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Create a new ASP.NET Web Application:</strong>
+        <ul>
+            <li>Create a new project with ASP.NET Web Application.</li>
+        </ul>
+    </li>
+    <li><strong>Add a Web Service:</strong>
+        <ul>
+            <li>Add a web service to the project.</li>
+            <li>Add the provided code to the web service class.</li>
+        </ul>
+    </li>
+    <li><strong>Run the Web Service:</strong>
+        <ul>
+            <li>Start the project to host the web service.</li>
+            <li>Access the Service Description and copy the link.</li>
+        </ul>
+    </li>
+    <li><strong>Create a New Web Application in NetBeans:</strong>
+        <ul>
+            <li>Open NetBeans and create a new web application project.</li>
+        </ul>
+    </li>
+    <li><strong>Add a New Web Service Client:</strong>
+        <ul>
+            <li>Add a new web service client to the project.</li>
+            <li>Point the client to the web service application using the copied link.</li>
+        </ul>
+    </li>
+    <li><strong>Save and Run the File:</strong>
+        <ul>
+            <li>Save the changes to the client file.</li>
+            <li>Run the client to consume the web service.</li>
+        </ul>
+    </li>
+</ol>
+
+<h3>Conclusion:</h3>
+<p>We have successfully created an application in Visual Studio, which is consumed by Java NetBeans using Glassfish server, demonstrating the development of a client that consumes web services developed on different platforms.</p>
+
+
+<h2>Practical 05: JAX-WS Web Service and Servlet/JSP</h2>
+
+<h3>Aim:</h3>
+<p>Write a JAX-WS web service to perform the following operations. Define a Servlet / JSP that consumes the web service.</p>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Create a new Java Web Application in NetBeans 8.1</strong></li>
+    <li><strong>Create a new WebService</strong></li>
+    <li><strong>Add operation</strong></li>
+    <li><strong>Run the file</strong></li>
+    <li><strong>Create another web application</strong></li>
+    <li><strong>Add a Web service Client and Connect it to the web service</strong></li>
+    <li><strong>Add a servlet file to your consume app</strong></li>
+    <li><strong>Drag and drop the addition method()</strong></li>
+    <li><strong>Add the following code to the servlet <code>processRequest</code> function:</strong>
+        <pre><code>out.println("&lt;form&gt;");
+out.println("Enter First number: &lt;input type='text' name='n1'/&gt;");
+out.println("Enter second number: &lt;input type='text' name='n2'/&gt;");
+out.println("&lt;input type='submit' value='add'/&gt;&lt;/form&gt;");
+out.println("&lt;h1&gt;Addition of two number&lt;/h1&gt;" + add(Integer.parseInt(request.getParameter("n1")), Integer.parseInt(request.getParameter("n2"))) + "&lt;/h1&gt;");
+</code></pre>
+    </li>
+    <li><strong>Run the application</strong></li>
+</ol>
+
+<h2>Practical 06: Web Service Method for Database Content in JSON</h2>
+
+<h3>Aim:</h3>
+<p>Define a web service method that returns the contents of a database in a JSON string. The contents should be displayed in a List Format.</p>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Create a new ASP.Net Web Application</strong></li>
+    <li><strong>Make sure you have installed Data storage and processing, SQL Express for Visual Studio 2022</strong></li>
+    <li><strong>Go to Server Explorer and create a new SQL database</strong></li>
+    <li><strong>Add a new Web Service</strong></li>
+    <li><strong>Add the following code:</strong>
+        <pre><code>[WebMethod]
+public void GetAllStudents()
+{
+    List&lt;student&gt; slist = new List&lt;student&gt;();
+    string cs = ConfigurationManager.ConnectionStrings["ApplicationServices"].ConnectionString;
+    using (SqlConnection con = new SqlConnection(cs))
+    {
+        SqlCommand cmd = con.CreateCommand();
+        cmd.Connection = con;
+        cmd.CommandType = System.Data.CommandType.Text;
+        cmd.CommandText = "select * from student";
+        con.Open();
+        SqlDataReader rdr = cmd.ExecuteReader();
+        while (rdr.Read())
+        {
+            student s = new student();
+            s.name = rdr["name"].ToString();
+            s.rollno = Convert.ToInt32(rdr["roll no"]);
+            s.emailid = rdr["email"].ToString();
+            slist.Add(s);
+        }
+    }
+    JavaScriptSerializer js = new JavaScriptSerializer();
+    Context.Response.Write(js.Serialize(slist));
+}</code></pre>
+    </li>
+    <li><strong>Create a class called 'Student'</strong></li>
+    <li><strong>Add the following code:</strong>
+        <pre><code>public class student
+{
+    public string name { get; set; }
+    public int rollno { get; set; }
+    public string emailid { get; set; }
+}</code></pre>
+    </li>
+    <li><strong>Create a new Table</strong></li>
+    <li><strong>Insert new Query:</strong>
+        <pre><code>CREATE TABLE [dbo].[Table_Student] (
+    [StudentId] INT IDENTITY(1,1) PRIMARY KEY,
+    [Name] VARCHAR(100) NOT NULL,
+    [RollNo] BIGINT NULL,
+    [Email] VARCHAR(100) NULL
+);
+
+INSERT INTO [dbo].[Table_Student] ([Name], [RollNo], [Email])
+VALUES ('John Doe', 123456, 'john.doe@example.com');
+
+INSERT INTO [dbo].[Table_Student] ([Name], [RollNo], [Email])
+VALUES ('John2 Doe', 1234567, 'john2.doe@example.com');</code></pre>
+    </li>
+    <li><strong>Go to Web.config file and make changes:</strong>
+        <pre><code>&lt;connectionStrings&gt;
+    &lt;add name="ApplicationServices" connectionString="Data Source=TANISH\SQLEXPRESS;Initial Catalog=student;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True"
+    providerName="System.Data.SqlClient"/&gt;
+&lt;/connectionStrings&gt;</code></pre>
+    </li>
+    <li><strong>Run the webservice and click on 'GetAllStudents'</strong></li>
+</ol>
+
+<h2>Practical 07: Define RESTful Web Service for CRUD Operations</h2>
+
+<h3>Aim:</h3>
+<p>Define a RESTful web service that accepts the details to be stored in a database and performs CRUD operation.</p>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Create a new web application</strong></li>
+    <li><strong>Create a new Entity Class 'Student'</strong></li>
+    <li><strong>Insert code after SET ID Property:</strong>
+        <pre><code>// Add property student name
+</code></pre>
+    </li>
+    <li><strong>Add JSF pages from entity class</strong></li>
+    <li><strong>Now add RESTful webservices from entity class as shown below:</strong></li>
+    <li><strong>[Placeholder for image or specific instructions]</strong></li>
+</ol>
+
+<h2>Practical 08: Implementing Service and Client using WCF</h2>
+
+<h3>Aim:</h3>
+<p>Implement a typical service and a typical client using Windows Communication Foundation (WCF).</p>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Create a new web application</strong></li>
+    <li><strong>Create a new SQL database and create a table with dummy values:</strong>
+        <pre><code>CREATE TABLE [dbo].[student]
+(
+	[Id] INT NOT NULL PRIMARY KEY, 
+    [name] NCHAR(10) NULL, 
+    [address] NCHAR(10) NULL
+)
+
+INSERT INTO [dbo].[student] ([Id], [name], [address])
+VALUES (1, 'John Doe', '123 Main Street'),
+       (2, 'Jane Smith', '456 Elm Street'),
+       (3, 'Alice Johnson', '789 Oak Avenue');
+</code></pre>
+    </li>
+    <li><strong>Add a WCF Service:</strong>
+        <ul>
+            <li>Create an interface IService1 with the required operations.</li>
+            <li>Create a class Service1 that implements IService1 and defines the operation to fetch data from the database.</li>
+        </ul>
+    </li>
+    <li><strong>Add the connection string in Web.config file:</strong>
+        <pre><code>&lt;configuration&gt;
+    &lt;connectionStrings&gt;
+        &lt;add name="APP" connectionString="Data Source=TANISH\SQLEXPRESS;Initial Catalog=student8;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True"/&gt;
+    &lt;/connectionStrings&gt;
+&lt;/configuration&gt;
+</code></pre>
+    </li>
+    <li><strong>Add the code in Service1.svc.cs file:</strong>
+        <pre><code>public class Service1 : IService1
+{
+    public student GetStudent()
+    {
+        string constr = ConfigurationManager.ConnectionStrings["APP"].ConnectionString;
+        using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand("select * from student8"))
+            {
+                using (SqlDataAdapter sda = new SqlDataAdapter())
+                {
+                    cmd.Connection = con;
+                    sda.SelectCommand = cmd;
+                    using (DataTable dt = new DataTable())
+                    {
+                        student s = new student();
+                        sda.Fill(s.studentsTable);
+                        return s;
+                    }
+                }
+            }
+        }
+    }
+}
+</code></pre>
+    </li>
+    <li><strong>Run this service in a browser</strong></li>
+    <li><strong>Add a WCF Web Reference</strong></li>
+    <li><strong>Add a WebForm</strong></li>
+    <li><strong>Add a GridView</strong></li>
+    <li><strong>Write the following code in the page load:</strong>
+        <pre><code>ServiceReference1.Service1Client sc = new ServiceReference1.Service1Client();
+GridView1.DataSource = sc.GetStudent().studentsTable;
+GridView1.DataBind();
+</code></pre>
+    </li>
+</ol>
+
+
+<h2>Practical 09: Creating an AJAX-enabled WCF Service</h2>
+
+<h3>Aim:</h3>
+<p>Use Windows Communication Foundation (WCF) to create a basic ASP.NET Asynchronous JavaScript and XML (AJAX) service.</p>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Create a new ASP.NET Web Application</strong></li>
+    <li><strong>Name your project ("AJAX-Enabled-WCF"). Make sure to change the .NET Framework to 4.8</strong></li>
+    <li><strong>Create an empty project and uncheck configure for HTTP</strong></li>
+    <li><strong>Create a new Web form.</strong></li>
+    <li><strong>Design the webpage to have two textboxes and one button. Make sure to use HTML components.</strong></li>
+    <li><strong>Add a WCF Service (Ajax-enabled)</strong></li>
+    <li><strong>Add the following code:</strong>
+        <pre><code>[OperationContract]
+public int addition(int a, int b)
+{
+    return a + b;
+}
+</code></pre>
+    </li>
+    <li><strong>Add an AJAX Extension called ScriptManager as shown below:</strong>
+        <pre><code>&lt;asp:ScriptManager ID="ScriptManager1" runat="server"&gt;
+    &lt;Services&gt;
+        &lt;asp:ServiceReference Path="~/Service1.svc" /&gt;
+    &lt;/Services&gt;
+&lt;/asp:ScriptManager&gt;
+</code></pre>
+    </li>
+    <li><strong>Go to the markup section and add the code between the ScriptManager tags as shown below:</strong></li>
+    <li><strong>Below is the entire markup code with JavaScript:</strong></li>
+</ol>
+
+<pre><code>&lt;body&gt;
+    &lt;form id="form1" runat="server"&gt;
+        &lt;div&gt;
+            Enter the First Number: &lt;input id="n1" type="text" /&gt;&lt;br /&gt;
+            Enter the Second Number: &lt;input id="n2" type="text" /&gt;&lt;br /&gt;
+            &lt;input type="button" value="Add" onclick="add()"/&gt;&lt;br /&gt;
+            &lt;span id="ans"&gt;&lt;/span&gt;
+            &lt;asp:ScriptManager ID="ScriptManager1" runat="server"&gt;
+                &lt;Services&gt;
+                    &lt;asp:ServiceReference Path="~/Service1.svc" /&gt;
+                &lt;/Services&gt;
+            &lt;/asp:ScriptManager&gt;&lt;br /&gt;
+        &lt;/div&gt;
+        &lt;div&gt;&nbsp;&lt;/div&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+&lt;script type="text/javascript"&gt;
+    function add() {
+        var a, b;
+        a = parseInt(document.getElementById("n1").value);
+        b = parseInt(document.getElementById("n2").value);
+        Service1.addition(a, b, onSuccess);
+    }
+    function onSuccess(result) {
+        var myres = $get("ans");
+        myres.innerHTML = "addition of two numbers is " + result;
+    }
+&lt;/script&gt;
+</code></pre>
+
+<p>The highlighted code in yellow is the service name created above. Make sure you replace it with the name you have given. Here it's the default name.</p>
+
+<p>Run the web form, and you should get the output running.</p>
+
+
+<h2>Practical 10: Using Binding Attribute in WCF</h2>
+
+<h3>Aim:</h3>
+<p>Demonstrate using the binding attribute of an endpoint element in WCF.</p>
+
+<h3>Steps:</h3>
+
+<ol>
+    <li><strong>Create a new WCF Service Application in ASP.NET</strong></li>
+    <li><strong>Add the following code in the interface (IService.cs):</strong>
+        <pre><code>[OperationContract]
+int add(int a, int b);
+</code></pre>
+    </li>
+    <li><strong>Add the following code in the class ("service1.svc.cs"):</strong>
+        <pre><code>public int add(int a, int b)
+{
+    return a + b;
+}
+</code></pre>
+    </li>
+    <li><strong>Now run the project: you will see the screen below.</strong></li>
+    <li><strong>Don’t stop the project or close this screen. Minimize this screen and open the service.svc in the browser as shown below: copy the address and paste it in the Browser.</strong></li>
+    <li><strong>Now click the first link and copy the link from the browser.</strong></li>
+    <li><strong>Now open NetBeans to consume this service:
+        <ul>
+            <li>Create a new web application.</li>
+        </ul>
+    </strong></li>
+    <li><strong>Now add web client service as shown below:</strong></li>
+    <li><strong>Paste the link here as shown below:</strong></li>
+    <li><strong>Click finish to create. Then create a JSP page.</strong></li>
+    <li><strong>Drag and drop the add function from the web service reference as shown below.</strong></li>
+    <li><strong>Make Changes to the code:</strong></li>
+</ol>
+
+<pre><code>&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+    &lt;title&gt;JSP Page&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form name="myform"&gt;
+        Enter number 1: &lt;input type="text" name="n1" id="n1"&gt;&lt;br/&gt;
+        Enter number 2: &lt;input type="text" name="n2" id="n2"&gt;&lt;br/&gt;
+        &lt;input type="submit" value="add"&gt;
+    &lt;/form&gt;
+    &lt;%
+    if(request.getParameter("n1")!=null &amp;&amp; request.getParameter("n2")!=null)
+    {
+        int x=Integer.parseInt(request.getParameter("n1"));
+        int y=Integer.parseInt(request.getParameter("n2"));
+        out.println("&lt;br/&gt;");
+        // start web service invocation
+        out.println("&lt;hr/&gt;");
+        try {
+            org.tempuri.Service1 service = new org.tempuri.Service1();
+            org.tempuri.IService1 port = service.getBasicHttpBindingIService1();
+            // TODO initialize WS operation arguments here
+            java.lang.Integer a = Integer.valueOf(x);
+            java.lang.Integer b = Integer.valueOf(y);
+            // TODO process result here
+            java.lang.Integer result = port.add(a, b);
+            out.println("Addition of two numbers is : "+result);
+        } catch (Exception ex) {
+            // TODO handle custom exceptions here
+        }
+        out.println("&lt;hr/&gt;");
+        // end web service invocation
+    }
+    %&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>Now run the JSP page. Make sure your ASP.NET page is still running.</p>
+
+
+
+
+<h1>EXTRA CODES</h1>
+<h3>prac8</h3>
+    <p>
+      step 1 web app - new - empty - uncheck https <br>
+      step 2 server exp - data connections = new sql db trust server check add name<br>
+      step 3 create table Create table stud with id, name and address <br>
+      step 4  and insert few dummy data <br>
+      step 5  create table student(id int, name text,address text); <br>
+      step 6 add wcf to the project
+      step 7 add code 
+    <pre> public interface IService1
+        {
+        [OperationContract]
+        student GetStudent();
+        }
+        [DataContract]
+        public class student
+        {
+        public student()
+        {
+        this.studentsTable = new DataTable("student");
+        }
+        [DataMember]
+        public DataTable studentsTable { get; set; }
+        }
+    </pre>
+      
+      step 8 go to web config add the code add ur data source <br>
+      <pre>
+        configuration>
+            connectionStrings>
+            add name="APP" connectionString="Data Source=SURAJ
+            
+            LAPTOP\SQLEXPRESS;Initial Catalog=student2;Integrated
+            Security=True;Pooling=False;" providerName="System.Data.SqlClient"/>
+            /connectionStrings>
+            ADD TAGS!
+      </pre>
+      step 8 in the Iservice1.svc add the code 
+      <pre>
+        public student GetStudent()
+        {
+            string constr=ConfigurationManager.ConnectionStrings["APP"].ConnectionString;
+            using (SqlConnection con = new SqlConnection(constr))
+        {
+            using (SqlCommand cmd = new SqlCommand("select * from student"))
+        {
+            using (SqlDataAdapter sda=new SqlDataAdapter())
+        {
+            cmd.Connection = con;
+            sda.SelectCommand = cmd;
+            using (DataTable dt = new DataTable())
+        {
+            student s=new student();
+            sda.Fill(s.studentsTable);
+            return s;
+        }
+
+        }
+        }
+        }
+        }
+      </pre>
+      step 9 save n run the service <br>
+      step 10 add service reference  - discover webservice1 <br>
+      step 11 add webform <br>
+      step 12 add grid view from tool box and write code on page load <br>
+      <pre>
+        ServiceReference1.Service1Client sc=new ServiceReference1.Service1Client();
+        GridView1.DataSource = sc.GetStudent().studentsTable;
+        GridView1.DataBind();
+      </pre>
+      step 13 select the web form and run 
+
+      <h4>prac9</h4>
+      <p>
+        step 1 visual studio - asp .net framework <br>
+        step 2 change the version to 4.8 - empty - unchekc https<br>
+        step 3 add web form <br>
+        step 4 add htlm components : 2 textbox and a button and a div <br>
+        step 5 add wcf service <br>
+        step 6 add the code 
+        <pre>
+            [OperationContract]
+            public int addition(int a, int b)
+                {
+                    return a + b;
+                }
+        </pre>
+        step 7 in the web form add the scriptmanager <br>
+        step 8 add the following code 
+        <pre>
+            body
+                form id="form1" runat="server"
+                div
+                Enter the First Number:input id="n1" type="text" /><br />
+                Enter the Second Number:input id="n2" type="text" /><br />
+                input type="button" value="Add" onclick="add()"/><br />
+                span id="ans"></span>
+                asp:ScriptManager ID="ScriptManager1" runat="server">
+                Services>
+                asp:ServiceReference Path="~/Service1.svc" />
+                /Services>
+                /asp:ScriptManager><br />
+                /div>
+                div>&nbsp;</div>
+                form>
+                 /body>
+                html>
+                script type="text/javascript">
+                function add() {
+                var a, b;
+                a = parseInt(document.getElementById("n1").value);
+                b = parseInt(document.getElementById("n2").value);
+                Service1.addition(a, b, onSuccess);
+                }
+                function onSuccess(result) {
+                var myres = $get("ans");
+                myres.innerHTML = "addition of two numbers is " + result;
+                }
+                script>
+                add the tags!!!
+        </pre>
+        step 9 run the web form <br>
+      </p>
+      <h4>prac 10 </h4>
+      <p> step 1  in visual studio add WFC service app <br>
+          step 2 add the code in IService.cs <br>
+          <pre>
+            [OperationContract]
+int         add(int a,int b);
+          </pre>
+          step 3 add the code in service1.svc.cs 
+          <pre>
+            public int add(int a,int b)
+            {
+                return a + b;
+            }
+          </pre>
+          step 4 run the project <br>
+          step 5 from WCF test client copy the url <br>
+          step 6 paste the url in browser <br>
+          step 7 click the first link <br>
+          step 8 copy the url <br>
+          step 9 open netbeans <br>
+          step 10 java web - web app <br>
+          step 11  add web client service in ur web app <br>
+          step 12 in the wsdl url - paste the link u copied <br>
+          step 13 add a jsp page to ur project <br>
+          step 14 from the web service ref folder - add function <br>
+          step 15 drag n drop the add function in the jsp page <br>
+          step 16 add / modify the code <br>
+          <pre>
+            form name="myform">
+                Enter number 1: input type="text" name="n1" id="n1"><br/>
+                Enter number 2: input type="text" name="n2" id="n2"><br/>
+                input type="submit" value="add">
+                br>
+                % if(request.getParameter("n1")!=null &&
+                request.getParameter("n2")!=null)
+                {
+                int x=Integer.parseInt(request.getParameter("n1"));
+                int y=Integer.parseInt(request.getParameter("n2"));
+                try {
+                org.tempuri.Service1 service = new org.tempuri.Service1();
+                
+                org.tempuri.IService1 port =
+                service.getBasicHttpBindingIService1();
+                
+                // TODO process result here
+                java.lang.Integer result = port.add(x, y);
+                out.println("Addition of two number is : "+result);
+                }
+                catch (Exception ex)
+                {
+                // TODO handle custom exceptions here
+                }
+                }
+                %>
+                ADD TAGS !!
+
+          </pre>
+
+
+</body>
+</html>
