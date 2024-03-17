@@ -100,56 +100,100 @@ namespace TemperatureConvert
 </code>
 </pre>
 
-<h2>Practical 02: Operation Implementation with WCF Service Application</h2>
+<h2>Practical 02: Implementing One-Way and Request-Response Operations in WCF</h2>
 
 <h3>Aim:</h3>
-<p>Write a program to implement the operation that can receive requests and return responses in two ways:</p>
-<ol>
-    <li>One-Way operation</li>
-    <li>Request-Response</li>
-</ol>
+<p>Write a program to implement operations that can receive requests and return responses in two ways: A) One-Way operation and B) Request-Response.</p>
 
 <h3>Steps:</h3>
 
 <ol>
-    <li><strong>Create a WCF Service Application</strong>:
-        <ul>
-            <li>Create a new project with WCF Service Application.</li>
-        </ul>
-    </li>
-    <li><strong>Add Code to IService1.cs</strong>:
-        <ul>
-            <li>Define the service contract interface `IService1`.</li>
-            <li>Add methods for Subtract, Multiply, Divide, Hello, and Add operations.</li>
-        </ul>
-    </li>
-    <li><strong>Add Code to Service1.cs</strong>:
-        <ul>
-            <li>Implement the service contract interface in `Service1` class.</li>
-            <li>Implement methods for Subtract, Multiply, Divide, Hello, and Add operations.</li>
-        </ul>
-    </li>
-    <li><strong>Run the Project</strong>:
-        <ul>
-            <li>Start the project to host the WCF service.</li>
-        </ul>
-    </li>
-    <li><strong>Check One-Way Operation</strong>:
-        <ul>
-            <li>Click on "Subtract" to check for One-Way Operation.</li>
-            <li>One-Way operation means the client sends a request to the service, but the service doesn't send any response back to the client. It's a fire-and-forget scenario.</li>
-        </ul>
-    </li>
-    <li><strong>Check Request-Response</strong>:
-        <ul>
-            <li>Click on "Add" to check for Request-Response.</li>
-            <li>Request-Response means the client sends a request to the service, and the service sends a response back to the client.</li>
-        </ul>
-    </li>
-</ol>
+    <!-- Step 1: Create a WCF Service Application in Visual Studio -->
+    <li><strong>Create a WCF Service Application in Visual Studio.</strong></li>
+    <!-- Step 2: Add code to IService1.cs -->
+    <li><strong>Click on IService1.cs and add the code:</strong>
+        <pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Text;
 
-<h3>Conclusion:</h3>
-<p>Congratulations! You have successfully implemented a WCF service with operations supporting both One-Way and Request-Response communication.</p>
+namespace Practical_02
+{
+    [ServiceContract(Namespace ="https://Microsoft.ServiceModel.Samples")]
+    public interface IService1
+    {
+        [OperationContract(IsOneWay =true)]
+        void Subtract(double n1, double n2);
+
+        [OperationContract(IsOneWay =true)]
+        void Multiply(double n1, double n2);
+
+        [OperationContract(IsOneWay =true)]
+        void Divide(double n1, double n2);
+
+        [OperationContract]
+        string Hello(string name);
+        [OperationContract]
+        double Add (double n1, double n2);
+    }
+}
+</code></pre>
+    </li>
+    <!-- Step 3: Add code to Service1.cs -->
+    <li><strong>Now click on Service1.cs and add the following code:</strong>
+        <pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
+using System.ServiceModel.Web;
+using System.Text;
+
+namespace Practical_02
+{
+    public class Service1 : IService1
+    {
+        public void Subtract(double n1, double n2)
+        {
+            double result = n1 - n2;
+            System.Diagnostics.Debug.WriteLine("Subtract({0}, {1}) = {2}", n1, n2, result);
+        }
+
+        public void Multiply(double n1, double n2)
+        {
+            double result = n1 * n2;
+            System.Diagnostics.Debug.WriteLine("Multiply({0}, {1}) = {2}", n1, n2, result);
+        }
+
+        public void Divide(double n1, double n2)
+        {
+            double result = n1 / n2;
+            System.Diagnostics.Debug.WriteLine("Divide({0}, {1}) = {2}", n1, n2, result);
+        }
+
+        public string Hello(string name)
+        {
+            System.Diagnostics.Debug.WriteLine("Say Hello({0})", name);
+            return "hello" + name;
+        }
+
+        public double Add(double n1, double n2)
+        {
+            double result = n1 + n2;
+            return result;
+        }
+    }
+}
+</code></pre>
+    </li>
+    <!-- Step 4: Run the project -->
+    <li><strong>Click on Service.svc and run the project.</strong></li>
+    <!-- Step 5: Test the operations -->
+    <li><strong>Following dialog box will be shown. Click on "Subtract" to check for One-Way Operation and then click on "Add" to check for Request-Response.</strong></li>
+</ol>
 
 <h2>Practical 03: Business UDDI Registry Entry Extraction</h2>
 
